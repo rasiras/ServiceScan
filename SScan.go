@@ -11,7 +11,7 @@ import (
 
 func main() {
 	if len(os.Args) < 2 {
-		fmt.Println("Usage: subdomain-checker <filename>")
+		fmt.Println("Usage: SScan <filename>")
 		os.Exit(1)
 	}
 
