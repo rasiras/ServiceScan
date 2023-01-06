@@ -26,9 +26,11 @@ sub2.example.com
 sub3.example.com
 
 ```
+  
+Output 
 ```
 
 sub1.example.com [example.com]
-sub2.example.com [thirdparty.com]
+sub2.example.com [ezample.thirdparty.com]
 sub3.example.com [1.2.3.4]
 ```
