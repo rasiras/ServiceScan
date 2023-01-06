@@ -1,6 +1,6 @@
 # ServiceScan
 
-A tool for finding subdomains hosted on third party servers.
+A tool for finding subdomains hosted on third party servers or uses a third party service.
 
 **Description**
 
