@@ -10,9 +10,11 @@ This tool takes a list of subdomains as input and checks the CNAME (Canonical Na
 
 To use the tool, run the following command:
 
-Copy code
+```
 go build subdomain-finder.go
 ./subdomain-finder <filename>
+
+```
 where <filename> is the path to a file containing the list of subdomains, one per line.
 
 Example
