@@ -12,10 +12,10 @@ To use the tool, run the following command:
 
 ```
 go build subdomain-finder.go
-./subdomain-finder <filename>
+./SScan <filename>
 
 ```
-where <filename> is the path to a file containing the list of subdomains, one per line.
+where ```<filename>``` is the path to a file containing the list of subdomains, one per line.
 
 Example
 
