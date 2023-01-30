@@ -6,6 +6,13 @@ A tool for finding subdomains hosted on third party servers or uses a third part
 
 This tool takes a list of subdomains as input and checks the CNAME (Canonical Name) record for each one. If the CNAME record does not contain the main domain name and is not an IP address, the subdomain is considered to be hosted on a third party server and is highlighted in red.
 
+**Install**
+
+```
+go install github.com/rasiras/ServiceScan/SScan@latest
+
+```
+
 **Usage**
 
 To use the tool, run the following command:
