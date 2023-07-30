@@ -1,60 +1,64 @@
-
 package main
 
 import (
 	"bufio"
+	"flag"
 	"fmt"
 	"net"
 	"os"
+	"os/exec"
 	"strings"
 )
 
 func main() {
-	if len(os.Args) < 2 {
-		fmt.Println("Usage: SScan <filename>")
+	domainFlag := flag.String("d", "", "Run with a single domain (uses assetfinder)")
+	fileFlag := flag.String("f", "", "Run with a file containing multiple domains")
+	flag.Parse()
+
+	var domains []string
+
+	if *domainFlag != "" && *fileFlag != "" {
+		fmt.Println("Error: You can't use both -d and -f flags. Choose either one.")
+		flag.Usage()
+		os.Exit(1)
+	} else if *domainFlag == "" && *fileFlag == "" {
+		fmt.Println("Error: You must specify either the -d flag for a single domain or the -f flag for a file containing multiple domains.")
+		flag.Usage()
 		os.Exit(1)
 	}
 
-	filename := os.Args[1]
-	file, err := os.Open(filename)
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-	defer file.Close()
+	if *domainFlag != "" {
+		// If running with -d flag, use assetfinder to find subdomains
+		domains = getSubdomainsFromAssetFinder(*domainFlag)
+	} else {
+		file, err := os.Open(*fileFlag)
+		if err != nil {
+			fmt.Println("Error opening the file:", err)
+			os.Exit(1)
+		}
+		defer file.Close()
 
-	scanner := bufio.NewScanner(file)
-
-	var subdomains []string
-	for scanner.Scan() {
-		subdomains = append(subdomains, scanner.Text())
-	}
-
-	mainDomain, err := getMainDomain(subdomains[0])
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		scanner := bufio.NewScanner(file)
+		for scanner.Scan() {
+			domains = append(domains, scanner.Text())
+		}
 	}
 
-	for _, subdomain := range subdomains {
-		cname, err := net.LookupCNAME(subdomain)
+	for _, domain := range domains {
+		mainDomain, err := getMainDomain(domain)
 		if err != nil {
 			fmt.Println(err)
 			continue
 		}
 
-		if isThirdPartyHost(cname, mainDomain) {
-			fmt.Printf("\033[31m%s [%s]\033[0m\n", subdomain, cname)
-		} else {
-			fmt.Printf("%s [%s]\n", subdomain, cname)
-		}
+		printCNAME(domain, mainDomain)
 	}
 }
 
-func getMainDomain(subdomain string) (string, error) {
-	parts := strings.Split(subdomain, ".")
+func getMainDomain(domain string) (string, error) {
+	parts := strings.Split(domain, ".")
 	if len(parts) < 2 {
-		return "", fmt.Errorf("invalid subdomain: %s", subdomain)
+		return "", fmt.Errorf("invalid domain: %s", domain)
 	}
 	return strings.Join(parts[len(parts)-2:], "."), nil
 }
@@ -62,3 +66,38 @@ func getMainDomain(subdomain string) (string, error) {
 func isThirdPartyHost(cname, mainDomain string) bool {
 	return !strings.Contains(cname, mainDomain) && net.ParseIP(cname).To4() == nil
 }
+
+func getSubdomainsFromAssetFinder(domain string) []string {
+	cmd := exec.Command("assetfinder", "--subs-only", domain)
+	output, err := cmd.Output()
+	if err != nil {
+		fmt.Println("Error running assetfinder:", err)
+		return nil
+	}
+
+	subdomains := strings.Split(string(output), "\n")
+	var cleanedSubdomains []string
+	for _, subdomain := range subdomains {
+		subdomain = strings.TrimSpace(subdomain)
+		if subdomain != "" {
+			cleanedSubdomains = append(cleanedSubdomains, subdomain)
+		}
+	}
+
+	return cleanedSubdomains
+}
+
+func printCNAME(domain, mainDomain string) {
+	cname, err := net.LookupCNAME(domain)
+	if err != nil {
+		fmt.Printf("Error looking up CNAME for %s: %s\n", domain, err)
+		return
+	}
+
+	if isThirdPartyHost(cname, mainDomain) {
+		fmt.Printf("\033[31m%s [%s]\033[0m\n", domain, cname)
+	} else {
+		fmt.Printf("%s [%s]\n", domain, cname)
+	}
+}
+
