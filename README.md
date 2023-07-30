@@ -2,7 +2,7 @@
 
 # ServiceScan Tool
 
-ServiceScan is a command-line tool written in Go that helps you find subdomains and their CNAME records for a given domain. It uses the `net` package to perform DNS lookups and can utilize `assetfinder` to discover subdomains.
+ServiceScan is a command-line tool written in Go that helps you find subdomains and their CNAME records for a given domain and highlight subdomains using third-party services. It uses the `net` package to perform DNS lookups and can utilize `assetfinder` to discover subdomains.
 
 ## Features
 
