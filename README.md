@@ -1,45 +1,78 @@
-# ServiceScan
 
-A tool for finding subdomains hosted on third party servers or uses a third party service.
 
-**Description**
+# ServiceScan Tool
 
-This tool takes a list of subdomains as input and checks the CNAME (Canonical Name) record for each one. If the CNAME record does not contain the main domain name and is not an IP address, the subdomain is considered to be hosted on a third party server and is highlighted in red.
+ServiceScan is a command-line tool written in Go that helps you find subdomains and their CNAME records for a given domain. It uses the `net` package to perform DNS lookups and can utilize `assetfinder` to discover subdomains.
 
-**Install**
+## Features
 
+- Subdomain enumeration for a single domain using `net.LookupCNAME`.
+- Subdomain enumeration for a single domain using `assetfinder` (optional flag).
+- Subdomain enumeration for multiple domains using a file (each domain in a separate line).
+- Identification of third-party CNAMEs.
+
+## Installation
+
+1. Install Go on your machine if you haven't already. You can download it from the official website: https://golang.org/dl/
+
+2. Clone the repository:
+
+   ```bash
+   git clone https://github.com/your-username/ServiceScan.git
+   cd ServiceScan
+   ```
+
+3. Build the executable:
+
+   ```bash
+   go build
+   ```
+
+## Usage
+
+### Subdomain Enumeration for a Single Domain
+
+To perform subdomain enumeration for a single domain, use the `-d` flag followed by the domain name. By default, the tool will use `net.LookupCNAME` to find subdomains.
+
+```bash
+./ServiceScan -d example.com
 ```
-go install github.com/rasiras/ServiceScan/SScan@latest
 
+To use `assetfinder` for subdomain enumeration, include the `-assetfinder` flag:
+
+```bash
+./ServiceScan -d example.com -assetfinder
 ```
 
-**Usage**
+### Subdomain Enumeration for Multiple Domains
 
-To use the tool, run the following command:
+Create a text file (e.g., domains.txt) with each domain in a separate line. Then, use the `-f` flag followed by the file name to enumerate subdomains for multiple domains.
 
-```
-go build subdomain-finder.go
-./SScan <filename>
-
-```
-where ```<filename>``` is the path to a file containing the list of subdomains, one per line.
-
-Example
-
-Input:
-
+```bash
+./ServiceScan -f domains.txt
 ```
 
-sub1.example.com
-sub2.example.com
-sub3.example.com
+## Output
 
-```
-  
-Output 
+The tool will display the subdomains along with their CNAME records. Third-party CNAMEs will be highlighted in red.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- The tool uses the `assetfinder` tool for subdomain enumeration. Check it out here: https://github.com/tomnomnom/assetfinder
+
+## Contributing
+
+Contributions are welcome! Feel free to open issues or submit pull requests.
+
+## Disclaimer
+
+This tool is intended for legal and authorized use only. Always ensure that you have permission to scan and analyze the target domain's subdomains before using this tool. The authors are not responsible for any misuse or illegal activities.
 ```
 
-sub1.example.com [example.com]
-sub2.example.com [ezample.thirdparty.com]
-sub3.example.com [1.2.3.4]
-```
+Remember to replace `<your-username>` in the installation section with your GitHub username.
+
+Feel free to customize the README to suit your tool's specific features and requirements. The README serves as the first point of contact for users and potential contributors, so make sure to include enough information to help them understand your tool and how to use it.
