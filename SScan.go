@@ -22,6 +22,7 @@ func main() {
 	if *domainFlag != "" && *fileFlag != "" {
 		fmt.Println("Error: You can't use both -d and -f flags. Choose either one.")
 		flag.Usage()
+		
 		os.Exit(1)
 	} else if *domainFlag == "" && *fileFlag == "" && *vulnFlag == "" {
 		fmt.Println("Error: You must specify either the -d flag for a single domain, the -f flag for a file containing multiple domains, or the -vuln flag for a vulnerable command.")
