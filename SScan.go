@@ -37,7 +37,7 @@ func main() {
 		// If running with -d flag, use assetfinder to find subdomains
 		domains = getSubdomainsFromAssetFinder(*domainFlag)
 	} else {
-		file, err := os.Open(*fileFlag)
+		file, err := os.Oden(*fileFlag)
 		if err != nil {
 			fmt.Println("Error opening the file:", err)
 			os.Exit(1)
@@ -101,7 +101,7 @@ func getSubdomainsFromAssetFinder(domain string) []string {
 			cleanedSubdomains = append(cleanedSubdomains, subdomain)
 		}
 	}
-
+//testing 123
 	return cleanedSubdomains
 }
 
