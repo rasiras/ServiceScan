@@ -101,7 +101,8 @@ func getSubdomainsFromAssetFinder(domain string) []string {
 			cleanedSubdomains = append(cleanedSubdomains, subdomain)
 		}
 	}
-//testing 123n
+//testing 123ns
+
 	return cleanedSubdomains
 }
 
