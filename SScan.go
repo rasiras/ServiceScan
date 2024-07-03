@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func main() {
