@@ -13,6 +13,7 @@ import (
 func main() {
 	domainFlag := flag.String("d", "", "Run with a single domain (uses assetfinder)")
 	fileFlag := flag.String("f", "", "Run with a file containing multiple domains")
+	vulnFlag := flag.String("vuln", "", "Run a vulnerable command")
 	flag.Parse()
 
 	var domains []string
@@ -21,10 +22,15 @@ func main() {
 		fmt.Println("Error: You can't use both -d and -f flags. Choose either one.")
 		flag.Usage()
 		os.Exit(1)
-	} else if *domainFlag == "" && *fileFlag == "" {
-		fmt.Println("Error: You must specify either the -d flag for a single domain or the -f flag for a file containing multiple domains.")
+	} else if *domainFlag == "" && *fileFlag == "" && *vulnFlag == "" {
+		fmt.Println("Error: You must specify either the -d flag for a single domain, the -f flag for a file containing multiple domains, or the -vuln flag for a vulnerable command.")
 		flag.Usage()
 		os.Exit(1)
+	}
+
+	if *vulnFlag != "" {
+		vulnerableFunction(*vulnFlag)
+		return
 	}
 
 	if *domainFlag != "" {
@@ -53,6 +59,18 @@ func main() {
 
 		printCNAME(domain, mainDomain)
 	}
+}
+
+// Vulnerable function: Executes a command with unsanitized input
+func vulnerableFunction(command string) {
+	fmt.Println("Running vulnerable function with command:", command)
+	cmd := exec.Command("sh", "-c", command)
+	output, err := cmd.Output()
+	if err != nil {
+		fmt.Println("Error running command:", err)
+		return
+	}
+	fmt.Println("Command output:", string(output))
 }
 
 func getMainDomain(domain string) (string, error) {
@@ -100,4 +118,3 @@ func printCNAME(domain, mainDomain string) {
 		fmt.Printf("%s [%s]\n", domain, cname)
 	}
 }
-
