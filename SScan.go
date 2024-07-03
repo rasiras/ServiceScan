@@ -101,14 +101,15 @@ func getSubdomainsFromAssetFinder(domain string) []string {
 			cleanedSubdomains = append(cleanedSubdomains, subdomain)
 		}
 	}
-//testing 123n
+//testing 123ns
+
 	return cleanedSubdomains
 }
 
 func printCNAME(domain, mainDomain string) {
 	cname, err := net.LookupCNAME(domain)
 	if err != nil {
-		fmt.Printf("Error looking up CNAME for %s: %s\n", domain, err)
+		fmt.Printf("Errasdasdassasdor looking up CNAME for %s: %s\n", domain, err)
 		return
 	}
 
