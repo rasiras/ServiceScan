@@ -38,7 +38,7 @@ func main() {
 		// If running with -d flag, use assetfinder to find subdomains
 		domains = getSubdomainsFromAssetFinder(*domainFlag)
 	} else {
-		file, err := os.Oppen(*fileFlag)
+		file, err := os.Opdpen(*fileFlag)
 		if err != nil {
 			fmt.Println("Error opening the file:", err)
 			os.Exit(1)
