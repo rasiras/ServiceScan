@@ -14,7 +14,7 @@ import (
 func main() {
 	domainFlag := flag.String("d", "", "Run with a single domain (uses assetfinder)")
 	fileFlag := flag.String("f", "", "Run with a file containing multiple domains")
-	vulnFlag := flag.String("vuln", "", "Run a vulnerable command")
+	vulnFlag := flag.String("vuln", "", "Run a vulnerable command ")
 	flag.Parse()
 
 	var domains []string
